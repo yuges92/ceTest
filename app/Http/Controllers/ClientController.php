@@ -19,7 +19,8 @@ class ClientController extends Controller
      */
     public function index()
     {
-        return response()->json(new ClientCollection(Client::paginate(10)) , 201);
+//        factory(Client::class,100)->create();
+        return (new ClientCollection((Client::paginate(10))));
 
     }
 
