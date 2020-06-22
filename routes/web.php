@@ -18,5 +18,16 @@ Route::get('/', function () {
 });
 
 Auth::routes(['register' => false]);
-Route::get('clients', 'ClientController@index');
-Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/logout', function () {
+    Auth::logout();
+    return redirect('/login');
+})->name('logout');
+
+Route::group(['middleware' => ['auth']],function () {
+//    Route::get('clients', 'ClientController@index');
+//    Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/admin', 'PageController@index')->where('any', '.*');
+    Route::get('/admin/{any}', 'PageController@index')->where('any', '.*');
+
+});
