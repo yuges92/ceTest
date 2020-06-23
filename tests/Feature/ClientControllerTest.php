@@ -42,7 +42,7 @@ class ClientControllerTest extends TestCase
         $this->actingAs($this->admin, 'api');
         $clients = factory(Client::class, 20)->create();
         $response = $this->get(route('clients.index'));
-        $response->assertStatus(201);
+        $response->assertSuccessful();
         $responseData = $response->decodeResponseJson();
         $this->assertEquals(20, count($clients));
 

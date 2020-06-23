@@ -32,7 +32,7 @@ class AuthTest extends TestCase
         ];
         $response = $this->post('/login', $data);
         $response->assertStatus(302);
-        $response->assertLocation('/admin/home');
+        $response->assertLocation('/admin');
         $this->assertAuthenticatedAs($this->admin);
 
     }
@@ -44,7 +44,7 @@ class AuthTest extends TestCase
     public function canUnAuthorisedUserAccessDashboard()
     {
         $this->withExceptionHandling();
-        $response =  $this->get('/admin/home');;
+        $response =  $this->get('/admin');;
         $response->assertStatus(302);
         $response->assertLocation('/login');
     }

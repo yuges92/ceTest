@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Client;
-use App\Http\Requests\StoreClient;
-use App\Http\Requests\UpdateClient;
+use App\Http\Requests\StoreClientRequest;
+use App\Http\Requests\UpdateClientRequest;
 use App\Http\Resources\ClientCollection;
 use App\Http\Resources\ClientResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class ClientController extends Controller
@@ -27,7 +29,7 @@ class ClientController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @param StoreClient $request
+     * @param StoreClientRequest $request
      * @return void
      */
     public function create()
@@ -38,10 +40,10 @@ class ClientController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreClient $request
+     * @param StoreClientRequest $request
      * @return Client $client
      */
-    public function store(StoreClient $request)
+    public function store(StoreClientRequest $request)
     {
         $validated = $request->validated();
         $client= Client::create($validated);
@@ -82,19 +84,19 @@ class ClientController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param UpdateClient $request
+     * @param UpdateClientRequest $request
      * @param Client $client
      * @return void
      */
-    public function update(UpdateClient $request, Client $client)
+    public function update(UpdateClientRequest $request, Client $client)
     {
-        $validated = $request->validated();
-        $client->update($validated);
+        $validated = Arr::except($request->validated(), ['avatar']);
         if ($request->file('avatar')) {
             $filename = $client->id . '.' . $request->file('avatar')->getClientOriginalExtension();
             $request->file('avatar')->storeAs('public',$filename);
             $client->avatar = $filename;
         }
+        $client->update($validated);
 
         return response()->json($client, 201);
 

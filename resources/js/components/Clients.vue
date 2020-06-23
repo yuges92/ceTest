@@ -1,81 +1,86 @@
 <template>
     <div class="container">
+        <div class="mb-3">
+            <router-link :to="{ name: 'clients.create' }" class="btn btn-primary"><i class="fa fa-plus"></i> Add Client
+            </router-link>
+        </div>
         <div class="card">
-            <div class="card-header">
-                <h5 class="mb-0">Add New Client</h5>
-            </div>
             <div class="card-body">
-                <form>
-                    <div class="form-group row">
-                        <label for="firstName" class="col-sm-2 col-form-label">First name:</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="firstName" value="">
-                        </div>
+                <v-server-table :columns="columns" :options="options" ref="table" url="/api/clients">
+                    <div class="avatar-container" slot="avatar" slot-scope="props">
+                        <img :src="'/'+props.row.avatar" alt="" class="avatar">
                     </div>
-                    <div class="form-group row">
-                        <label for="lastName" class="col-sm-2 col-form-label">Last name:</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="lastName" value="">
-                        </div>
+                    <div class="action-btns" slot="action" slot-scope="props">
+                        <router-link :to="{ name: 'clients.edit',params:{id:props.row.id} }" class="fa fa-edit"></router-link>
+                        <a class="fas fa-trash-alt" href=""></a>
                     </div>
-
-                    <div class="form-group row">
-                        <label for="email" class="col-sm-2 col-form-label">Email:</label>
-                        <div class="col-sm-10">
-                            <input type="email" class="form-control" id="email" value="">
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="avatar" class="col-sm-2 col-form-label">Avatar:</label>
-                        <div class="col-sm-10">
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="avatar">
-                                <label class="custom-file-label" for="avatar">Choose file</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="d-flex justify-content-end mt-4">
-                        <button class="btn btn-primary px-5" type="submit">Save</button>
-                    </div>
-
-                </form>
+                </v-server-table>
             </div>
+
         </div>
 
     </div>
 </template>
 
 <script>
-    export default {
 
+    export default {
+        components: {},
+        computed: {},
         name: "Clients",
         data() {
             return {
-                clients:[],
+                clients: [],
+                columns: ['id', 'firstName', 'lastName', 'email', 'avatar', 'action'],
+                options: {
+                    perPage: 10,
+                    perPageValues: [10],
+                    filterable: false,
+                    responseAdapter({data}) {
+                        return {
+                            data: data.data,
+                            count: data.meta.total
+                        }
+                    },
+
+                }
             }
         },
-        methods:{
-            fetchClients:()=>{
-                axios.get('/api/clients').then(res=>{
-                    console.log(res)
-                    this.clients=res.data;
-                }).catch(err=>{
+        methods: {
+            fetchClients: () => {
+                axios.get('/api/clients').then(res => {
+                    // console.log(res)
+                    this.clients = res.data;
+                }).catch(err => {
 
-                }).finally({
+                }).finally({})
+            },
 
-                })
+
+            refreshTable() {
+                this.$refs.table.refresh();
             }
+
         },
         created() {
-            this.fetchClients();
+            // this.fetchClients();
         }
 
     }
 </script>
 
-<style scoped>
+<style lang="scss">
+    .action-btns {
+        display: flex;
+        justify-content: space-around;
+    }
 
+    .avatar-container {
+        width: 100px;
+
+        .avatar {
+            width: 100%;
+        }
+    }
 </style>
 
