@@ -5,22 +5,29 @@
  */
 
 
+
 require('./bootstrap');
 import Vue from "vue";
 import VueRouter from "vue-router";
 import {ServerTable, ClientTable, Event} from 'vue-tables-2';
 Vue.use(VueRouter)
 import App from "./components/App";
-import Clients from "./components/Clients";
-import ClientsCreate from "./components/ClientsCreate";
-import Transactions from "./components/Transactions";
+import Clients from "./components/clients/Clients";
+import ClientsCreate from "./components/clients/ClientsCreate";
+import Transactions from "./components/transactions/Transactions";
+import TransactionCreate from "./components/transactions/TransactionCreate";
+import TransactionEdit from "./components/transactions/TransactionEdit";
 import NotFoundComponent from "./components/NotFoundComponent";
 import Home from "./components/Home";
-import ClientsEdit from "./components/ClientsEdit";
+import ClientsEdit from "./components/clients/ClientsEdit";
 import BackBtn from "./components/BackBtn";
+import VueSweetalert2 from 'vue-sweetalert2';
+
+import 'sweetalert2/dist/sweetalert2.min.css';
+
+Vue.use(VueSweetalert2);
 Vue.use(ServerTable, [], false, "bootstrap4", "default");
 Vue.component("backBtn", BackBtn);
-
 
 const router = new VueRouter({
     mode:'history',
@@ -54,8 +61,24 @@ const router = new VueRouter({
                 },
                 {
                     path:'transactions',
-                    name:'transactions',
-                    component:Transactions
+                    component:Home,
+                    children: [
+                        {
+                            path: "",
+                            name: "transactions",
+                            component: Transactions
+                        },
+                        {
+                            path: "create",
+                            name: "transactions.create",
+                            component: TransactionCreate
+                        },
+                        {
+                            path: ":id",
+                            name: "transactions.edit",
+                            component: TransactionEdit
+                        }
+                    ]
                 },
             ],
 
