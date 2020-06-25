@@ -1,6 +1,12 @@
 <template>
     <div class="container">
+
         <backBtn></backBtn>
+        <div class="mb-3">
+            <router-link :to="{ name: 'clients.addTransaction' }" class="btn btn-primary"><i class="fa fa-plus"></i> Add Transaction
+            </router-link>
+        </div>
+
         <div class="card mb-5">
             <div class="card-header">
                 <h5 class="mb-0">Edit Client</h5>

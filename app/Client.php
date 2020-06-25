@@ -16,8 +16,11 @@ class Client extends Model
     ];
 
     public function transactions(){
-        $this->hasMany(Transaction::class,"client_id");
+       return  $this->hasMany(Transaction::class,"client_id");
     }
 
 
+    public function getFullname(){
+        return "$this->firstName $this->lastName";
+    }
 }

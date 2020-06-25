@@ -17,6 +17,7 @@ class TransactionResource extends JsonResource
         return [
             'id' => $this->id,
             'client_id' => $this->client_id,
+            'clientName' => $this->client->getFullname(),
             'transactionDate' => $this->transactionDate,
             'amount' => $this->amount,
 

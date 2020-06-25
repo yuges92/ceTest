@@ -22,12 +22,14 @@ import Home from "./components/Home";
 import ClientsEdit from "./components/clients/ClientsEdit";
 import BackBtn from "./components/BackBtn";
 import VueSweetalert2 from 'vue-sweetalert2';
+import Multiselect from 'vue-multiselect'
 
 import 'sweetalert2/dist/sweetalert2.min.css';
 
 Vue.use(VueSweetalert2);
 Vue.use(ServerTable, [], false, "bootstrap4", "default");
 Vue.component("backBtn", BackBtn);
+Vue.component('multiselect', Multiselect)
 
 const router = new VueRouter({
     mode:'history',
@@ -55,7 +57,12 @@ const router = new VueRouter({
                             path: ":id",
                             name: "clients.edit",
                             component: ClientsEdit
-                        }
+                        },
+                        {
+                            path: ":id/transactions",
+                            name: "clients.addTransaction",
+                            component: TransactionCreate
+                        },
                     ]
 
                 },
@@ -68,11 +75,7 @@ const router = new VueRouter({
                             name: "transactions",
                             component: Transactions
                         },
-                        {
-                            path: "create",
-                            name: "transactions.create",
-                            component: TransactionCreate
-                        },
+
                         {
                             path: ":id",
                             name: "transactions.edit",

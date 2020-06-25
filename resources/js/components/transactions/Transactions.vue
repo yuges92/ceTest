@@ -1,15 +1,12 @@
 <template>
     <div class="container">
-        <div class="mb-3">
-            <router-link :to="{ name: 'transactions.create' }" class="btn btn-primary"><i class="fa fa-plus"></i> Add Transaction
-            </router-link>
-        </div>
+
         <div class="card">
             <div class="card-body">
                 <v-server-table :columns="columns" :options="options" ref="table" url="/api/transactions">
 
                     <div class="action-btns" slot="action" slot-scope="props">
-                        <router-link :to="{ name: 'clients.edit',params:{id:props.row.id} }" class="btn btn-primary"><i class="fa fa-edit"></i></router-link>
+                        <router-link :to="{ name: 'transactions.edit',params:{id:props.row.id} }" class="btn btn-primary"><i class="fa fa-edit"></i></router-link>
                         <button class=" btn btn-danger" @click="deleteClient(props.row.id)"> <i class="fas fa-trash-alt"></i> </button>
                     </div>
                 </v-server-table>
@@ -29,12 +26,13 @@
         data() {
             return {
                 clients: [],
-                columns: ['id', 'client_id', 'transactionDate', 'amount', 'action'],
+                columns: ['id', 'client_id','clientName', 'transactionDate', 'amount', 'action'],
                 options: {
                     perPage: 10,
                     perPageValues: [10],
                     filterable: false,
                     responseAdapter({data}) {
+                        console.log(data)
                         return {
                             data: data.data,
                             count: data.meta.total
@@ -45,15 +43,6 @@
             }
         },
         methods: {
-            fetchClients: () => {
-                axios.get('/api/transactions').then(res => {
-                    // console.log(res)
-                    this.clients = res.data;
-                }).catch(err => {
-
-                }).finally({})
-            },
-
 
             refreshTable() {
                 this.$refs.table.refresh();
@@ -72,7 +61,7 @@
                     .then(result => {
                         if (result.value) {
                             axios
-                                .delete("/api/clients/" + id)
+                                .delete("/api/transactions/" + id)
                                 .then(res => {
                                     this.refreshTable();
                                     this.$swal({
