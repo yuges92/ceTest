@@ -10,7 +10,6 @@ require('./bootstrap');
 import Vue from "vue";
 import VueRouter from "vue-router";
 import {ServerTable, ClientTable, Event} from 'vue-tables-2';
-Vue.use(VueRouter)
 import App from "./components/App";
 import Clients from "./components/clients/Clients";
 import ClientsCreate from "./components/clients/ClientsCreate";
@@ -22,14 +21,12 @@ import Home from "./components/Home";
 import ClientsEdit from "./components/clients/ClientsEdit";
 import BackBtn from "./components/BackBtn";
 import VueSweetalert2 from 'vue-sweetalert2';
-import Multiselect from 'vue-multiselect'
-
 import 'sweetalert2/dist/sweetalert2.min.css';
 
+Vue.use(VueRouter)
 Vue.use(VueSweetalert2);
 Vue.use(ServerTable, [], false, "bootstrap4", "default");
 Vue.component("backBtn", BackBtn);
-Vue.component('multiselect', Multiselect)
 
 const router = new VueRouter({
     mode:'history',

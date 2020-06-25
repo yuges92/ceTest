@@ -16,10 +16,15 @@ Laravel is accessible, powerful, and provides tools required for large, robust a
 
 
 ## Steps
-
-
-## Database
-- mysql
+1. Clone the project 
+2. open the project
+3. setup your database
+3. copy the .env.example to .env or  use terminal to copy "cp .env.example .env"
+4. update the .env file with database detail
+5. run "composer install" to install composer
+6. run "php artisan key:generate" to generate key 
+6. run "php artisan migrate --seed" to create tables and genrate admin user
+ 
 
 
 ## Libararies
