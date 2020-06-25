@@ -21,12 +21,10 @@ abstract class TestCase extends BaseTestCase
         }
 
         $this->artisan('migrate:refresh');
-        Storage::fake('public');
         $this->artisan('db:seed');
-//        $this->faker = Factory::create();
         $this->admin = User::where('email', 'admin@admin.com')->first();
-        //        $this->withoutExceptionHandling();
-//        $this->withExceptionHandling();
+//                $this->withoutExceptionHandling();
+        $this->withExceptionHandling();
     }
 
 }

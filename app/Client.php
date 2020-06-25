@@ -15,5 +15,9 @@ class Client extends Model
         'email',
     ];
 
+    public function transactions(){
+        $this->hasMany(Transaction::class,"client_id");
+    }
+
 
 }

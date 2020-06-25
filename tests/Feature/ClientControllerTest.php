@@ -44,8 +44,13 @@ class ClientControllerTest extends TestCase
         $response = $this->get(route('clients.index'));
         $response->assertSuccessful();
         $responseData = $response->decodeResponseJson();
-        $this->assertEquals(20, count($clients));
-
+        $this->assertEquals(20, Client::all()->count());
+        $response->assertJsonStructure([
+            "data" ,
+            "links",
+            "meta"
+        ]);
+        $response->assertJsonCount(10,'data' );
     }
 
     /**
@@ -86,9 +91,9 @@ class ClientControllerTest extends TestCase
         $response->assertSuccessful();
         $data = Arr::except($data, ['avatar']);
         $this->assertDatabaseHas('clients', $data);
-        Storage::disk('local')->assertExists('public/'.$responseData['avatar']);
-        Storage::delete('public/'.$responseData['avatar']);
-        Storage::disk('local')->assertMissing('public/'.$responseData['avatar']);
+        Storage::disk('local')->assertExists('public/' . $responseData['avatar']);
+        Storage::delete('public/' . $responseData['avatar']);
+        Storage::disk('local')->assertMissing('public/' . $responseData['avatar']);
 
     }
 
@@ -112,7 +117,7 @@ class ClientControllerTest extends TestCase
         $response->assertSuccessful();
         $data = Arr::except($data, ['avatar']);
         $this->assertDatabaseHas('clients', $data);
-        Storage::disk('local')->assertMissing('public/'.$client->avatar);
+        Storage::disk('local')->assertMissing('public/' . $client->avatar);
 
     }
 
@@ -140,7 +145,6 @@ class ClientControllerTest extends TestCase
         ]);
 
     }
-
 
 
 }

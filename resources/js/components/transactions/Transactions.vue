@@ -6,10 +6,8 @@
         </div>
         <div class="card">
             <div class="card-body">
-                <v-server-table :columns="columns" :options="options" ref="table" url="/api/clients">
-                    <div class="avatar-container" slot="avatar" slot-scope="props">
-                        <img :src="'/'+props.row.avatar" alt="" class="avatar">
-                    </div>
+                <v-server-table :columns="columns" :options="options" ref="table" url="/api/transactions">
+
                     <div class="action-btns" slot="action" slot-scope="props">
                         <router-link :to="{ name: 'clients.edit',params:{id:props.row.id} }" class="btn btn-primary"><i class="fa fa-edit"></i></router-link>
                         <button class=" btn btn-danger" @click="deleteClient(props.row.id)"> <i class="fas fa-trash-alt"></i> </button>
@@ -31,7 +29,7 @@
         data() {
             return {
                 clients: [],
-                columns: ['id', 'firstName', 'lastName', 'email', 'avatar', 'action'],
+                columns: ['id', 'client_id', 'transactionDate', 'amount', 'action'],
                 options: {
                     perPage: 10,
                     perPageValues: [10],
@@ -48,7 +46,7 @@
         },
         methods: {
             fetchClients: () => {
-                axios.get('/api/clients').then(res => {
+                axios.get('/api/transactions').then(res => {
                     // console.log(res)
                     this.clients = res.data;
                 }).catch(err => {

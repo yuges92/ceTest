@@ -22,7 +22,7 @@ class ClientController extends Controller
     public function index()
     {
 //        factory(Client::class,100)->create();
-        return (new ClientCollection((Client::paginate(10))));
+        return (ClientResource::collection((Client::paginate(10))));
 
     }
 
@@ -54,7 +54,7 @@ class ClientController extends Controller
             $client->update();
         }
 
-        return response()->json($client, 201);
+        return response()->json(new ClientResource($client), 201);
 
 
     }

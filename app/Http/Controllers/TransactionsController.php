@@ -2,25 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TransactionRequest;
+use App\Http\Resources\TransactionResource;
+use App\Transaction;
 use App\Transactions;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class TransactionsController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return TransactionResource Collection
      */
     public function index()
     {
-        //
+        return (TransactionResource::collection((Transaction::paginate(10))));
+
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -30,32 +35,37 @@ class TransactionsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param TransactionRequest $request
+     * @return void
      */
-    public function store(Request $request)
+    public function store(TransactionRequest $request)
     {
-        //
+
+        $validated = $request->validated();
+        $transaction= Transaction::create($validated);
+        return response()->json(new TransactionResource($transaction), 201);
+
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Transactions  $transactions
-     * @return \Illuminate\Http\Response
+     * @param Transaction $transaction
+     * @return Response
      */
-    public function show(Transactions $transactions)
+    public function show(Transaction $transaction)
     {
-        //
+        return response()->json(new TransactionResource($transaction), 201);
+
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Transactions  $transactions
-     * @return \Illuminate\Http\Response
+     * @param Transaction $transactions
+     * @return void
      */
-    public function edit(Transactions $transactions)
+    public function edit(Transaction $transactions)
     {
         //
     }
@@ -63,23 +73,28 @@ class TransactionsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Transactions  $transactions
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Transaction $transaction
+     * @return Response
      */
-    public function update(Request $request, Transactions $transactions)
+    public function update(TransactionRequest $request, Transaction $transaction)
     {
-        //
+        $validated=$request->validated();
+        $transaction->update($validated);
+        return response()->json(new TransactionResource($transaction), 201);
+
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Transactions  $transactions
-     * @return \Illuminate\Http\Response
+     * @param Transaction $transaction
+     * @return Response
+     * @throws \Exception
      */
-    public function destroy(Transactions $transactions)
+    public function destroy(Transaction $transaction)
     {
-        //
+        $transaction->delete();
+        return response()->json('Deleted', 204);
     }
 }
